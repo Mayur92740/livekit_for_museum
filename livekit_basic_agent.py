@@ -96,7 +96,7 @@ async def entrypoint(ctx: agents.JobContext):
 
     # Generate initial greeting
     await session.generate_reply(
-        instructions="As the user their age and how interested are they in knowing about the history of Sharjah"
+        instructions="Ask the user their age and their interest in Sharjah's history"
     )
 if __name__ == "__main__":
     # Run the agent
