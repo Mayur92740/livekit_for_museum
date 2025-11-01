@@ -1,44 +1,76 @@
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "agent-starter-python"
-version = "1.0.0"
-description = "Simple voice AI assistant built with LiveKit Agents for Python"
+name = "livekit-voice-agent"
+version = "0.1.0"
+description = "Voice AI agent built with LiveKit Agents framework"
+readme = "README.md"
 requires-python = ">=3.9"
-
 dependencies = [
-    "livekit-agents[silero,turn-detector]~=1.2",
-    "livekit-plugins-noise-cancellation~=0.2",
-    "python-dotenv",
+    "livekit-agents[cartesia,google,mcp]~=1.2",
+    "livekit-plugins-openai>=1.0.0",
+    "livekit-plugins-deepgram>=1.0.0",
+    "livekit-plugins-silero>=1.0.0",
+    "livekit-plugins-turn-detector>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "livekit-plugins-cartesia>=1.2.17",
 ]
 
-[dependency-groups]
+[project.optional-dependencies]
+# Additional TTS providers
+tts = [
+    "livekit-plugins-cartesia>=1.0.0",
+    "livekit-plugins-elevenlabs>=1.0.0"
+]
+
+# Additional LLM providers
+llm = [
+    "livekit-plugins-anthropic>=1.0.0",
+    "livekit-plugins-google>=1.0.0",
+    "livekit-plugins-groq>=1.0.0",
+]
+
+# Additional STT providers
+stt = [
+    "livekit-plugins-assemblyai>=1.0.0",
+    "livekit-plugins-azure>=1.0.0",
+]
+
+# Development dependencies
 dev = [
-    "pytest",
-    "pytest-asyncio",
-    "ruff",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
 ]
 
-[tool.setuptools.packages.find]
-where = ["src"]
+# All optional dependencies
+all = [
+    "livekit-plugins-cartesia>=1.0.0",
+    "livekit-plugins-elevenlabs>=1.0.0",
+    "livekit-plugins-anthropic>=1.0.0",
+    "livekit-plugins-google>=1.0.0",
+    "livekit-plugins-groq>=1.0.0",
+    "livekit-plugins-assemblyai>=1.0.0",
+    "livekit-plugins-azure>=1.0.0",
+]
 
-[tool.setuptools.package-dir]
-"" = "src"
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
 
-[tool.ruff]
-line-length = 88
-target-version = "py39"
-
-[tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "B", "A", "C4", "UP", "SIM", "RUF"]
-ignore = ["E501"]  # Line too long (handled by formatter)
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
